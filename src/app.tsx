@@ -8,6 +8,6 @@ export const dva = {
 	}
 }
 
-export function rootContainer(container) {
+export function rootContainer(container: Reatc.ReactNode) {
 	return container
 }
