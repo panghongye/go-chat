@@ -19,7 +19,7 @@ const config: IConfig = {
 				antd: true,
 				dva: true,
 				dynamicImport: { webpackChunkName: true },
-				title: 'char',
+				title: 'chat',
 				dll: true,
 				locale: {
 					enable: true,

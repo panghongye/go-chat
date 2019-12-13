@@ -1,12 +1,11 @@
 import React from 'react'
-import css from './main.scss'
+import css from './index.scss'
 import { formatMessage } from 'umi-plugin-locale'
 import { SearchBar, Button, WhiteSpace, WingBlank, Icon, List } from 'antd-mobile'
 import UserAvatar from 'react-user-avatar'
-import TabBar from './tabBar'
+import { withRouter } from 'react-router-dom'
 
-export default function Main(props: any) {
-	console.log(props)
+export default withRouter(function Index(props) {
 	return (
 		<div>
 			<WhiteSpace size="sm" />
@@ -30,7 +29,6 @@ export default function Main(props: any) {
 					)
 				})}
 			</List>
-			<TabBar />
 		</div>
 	)
-}
+})

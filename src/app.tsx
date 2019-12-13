@@ -1,7 +1,7 @@
 import { withRouter } from 'react-router'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import React from 'react'
-
+import TabBar from './components/tabBar'
 export const dva = {
 	config: {
 		onError(err: ErrorEvent) {
@@ -14,10 +14,21 @@ export const dva = {
 export function rootContainer(container: JSX.Element) {
 	return (
 		<Router>
-			<Switch>
-				<Route path="/login">login</Route>
-				<Route path="/" component={require('./components/main').default} />
-			</Switch>
+			<Root />
 		</Router>
 	)
 }
+
+const Root = withRouter((props) => {
+	const pathname = props.location.pathname
+	return (
+		<>
+			<Switch>
+				<Route path="/login" component={require('./pages/login').default}></Route>
+				<Route path="/setting">setting</Route>
+				<Route path="/" component={require('./pages/index').default} />
+			</Switch>
+			{(pathname == '/' || pathname == '/setting') && <TabBar />}
+		</>
+	)
+})
