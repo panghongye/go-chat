@@ -1,5 +1,5 @@
 import withRouter from 'umi/withRouter'
-import { observer, Provider } from 'mobx-react'
+import {  Provider } from 'mobx-react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import React from 'react'
 import store from './models/index'
