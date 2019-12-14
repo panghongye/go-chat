@@ -13,6 +13,9 @@
     "antd-mobile": "^2.3.1",
     "axios": "^0.19.0",
     "dva": "^2.6.0-beta.6",
+    "mobx": "^5.15.0",
+    "mobx-react": "^6.1.4",
+    "mobx-state-tree": "^3.15.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-user-avatar": "^1.10.0"

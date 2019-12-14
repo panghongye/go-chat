@@ -6,9 +6,9 @@ const config: IConfig = {
 	sass: {},
 	// routes: [
 	// 	{
-	// 		path: '/',
-	// 		component: '../layouts/index',
-	// 		routes: [ { path: '/', component: '../pages/index' } ]
+	// 		path: '/'
+	// 		// component: null
+	// 		// routes: [ { path: '/', component: '../pages/index' } ]
 	// 	}
 	// ],
 	plugins: [
