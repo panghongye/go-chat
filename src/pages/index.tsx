@@ -47,7 +47,7 @@ class Index extends React.Component {
 				<Modal
 					visible={this.state.modal1}
 					bodyStyle={{ padding: 0 }}
-					transparent
+					transparent={true}
 					maskClosable={false}
 					onClose={this.onClose('modal1')}
 					title="新群组"
