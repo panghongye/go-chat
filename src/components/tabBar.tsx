@@ -2,7 +2,7 @@ import React from 'react'
 import { Icon } from 'antd'
 import css from './tabBar.scss'
 import { TabBar } from 'antd-mobile'
-import withRouter from 'umi/withRouter';
+import withRouter from 'umi/withRouter'
 import router from 'umi/router'
 const c1 = { fontSize: 44 }
 

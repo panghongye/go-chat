@@ -3,7 +3,7 @@ import css from './index.scss'
 import { formatMessage } from 'umi-plugin-locale'
 import { SearchBar, Button, WhiteSpace, WingBlank, Icon, List } from 'antd-mobile'
 import UserAvatar from 'react-user-avatar'
-import withRouter from 'umi/withRouter';
+import withRouter from 'umi/withRouter'
 
 
 export default withRouter(function Index(props) {

@@ -1,22 +1,19 @@
 import withRouter from 'umi/withRouter'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import {  Provider } from 'mobx-react'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import React from 'react'
-import TabBar from './components/tabBar'
+import store from './models/index'
 
-export const dva = {
-	config: {
-		onError(e: any) {
-			e.preventDefault()
-			console.error(e)
-		}
-	},
-	plugins: [ require('dva-logger')() ]
-}
+const App = withRouter((props) => {
+	return <>{props.children}</>
+})
 
 export function rootContainer(container: JSX.Element) {
 	return (
-		<>{container}</>
+		<Provider store={store}>
+			<Router>
+				<App>{container}</App>
+			</Router>
+		</Provider>
 	)
 }
-
-
