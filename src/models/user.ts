@@ -1,14 +1,6 @@
 import { getSnapshot, destroy, onSnapshot, types } from 'mobx-state-tree'
 
-// 外部创建或初始该模型时调用
-function InitModelData() {
-	try {
-		return { info: JSON.parse(localStorage.userInfo) }
-	} catch (error) {
-		return { info: {} }
-	}
-}
-
+let model: any //实例对象
 const Model = types
 	.model({
 		info: types.frozen({})
@@ -24,4 +16,15 @@ const Model = types
 		}
 	}))
 
-export default { Model, InitModelData }
+// 单例
+function modelGet() {
+	if (model) return model
+	let info = { b: 1 }
+	try {
+		info = Object.assign(info, JSON.parse(localStorage.userInfo))
+	} catch (error) {}
+	model = Model.create({ info })
+	return model
+}
+
+export default { Model, modelGet }
