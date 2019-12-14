@@ -2,8 +2,7 @@ import React from 'react'
 import { Icon } from 'antd'
 import css from './tabBar.scss'
 import { TabBar } from 'antd-mobile'
-import { withRouter } from 'react-router-dom'
-import router from 'umi/router'
+import withRouter from 'umi/withRouter';
 const c1 = { fontSize: 44 }
 
 const i1 = <Icon type={'message'} style={c1} />

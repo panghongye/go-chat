@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Toast } from 'antd-mobile'
-import { withRouter } from 'react-router-dom'
+import withRouter from 'umi/withRouter';
 import css from './index.scss'
 import { Button } from 'antd'
 import axios from '../../util/request'
