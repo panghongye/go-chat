@@ -10,7 +10,6 @@ const i1 = <Icon type={'message'} style={c1} />
 const i2 = <Icon type={'setting'} style={c1} />
 
 export default withRouter(function _TabBar(props) {
-	console.log('pp',props)
 	return (
 		<div className={css.TabBar}>
 			<TabBar barTintColor="white" unselectedTintColor="#949494" tintColor="#33A3F4">

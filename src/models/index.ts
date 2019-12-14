@@ -4,9 +4,11 @@ import { getSnapshot, destroy, onSnapshot, types } from 'mobx-state-tree'
 import user from './user'
 
 const Store = types.model({
+	// user: types.maybe(user.Model)
 	user: user.Model
 })
 
+// const store = Store.create({ user: { ...user.modelGet() } })
 const store = Store.create({ user: user.modelGet() })
 
 connectReduxDevtools(require('remotedev').default, store) // 连接 Chrome Redux DevTool
