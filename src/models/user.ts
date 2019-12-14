@@ -1,9 +1,11 @@
 import { getSnapshot, destroy, onSnapshot, types } from 'mobx-state-tree'
 
+type Info = { name?: string; token?: string }
+
 let model: any //实例对象
 const Model = types
 	.model({
-		info: types.frozen({})
+		info: types.frozen({} as Info)
 	})
 	.actions((self) => ({
 		login(user: any) {
@@ -19,7 +21,7 @@ const Model = types
 // 单例
 function modelGet() {
 	if (model) return model
-	let info = {}
+	let info = {name:'sdfdsllsddksfd'}
 	try {
 		info = Object.assign(info, JSON.parse(localStorage.userInfo))
 	} catch (error) {}
