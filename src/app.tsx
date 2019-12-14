@@ -1,10 +1,19 @@
 import withRouter from 'umi/withRouter'
-import { observer } from 'mobx-react'
+import { observer, Provider } from 'mobx-react'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import React from 'react'
 import store from './models/index'
 
-const Root = observer((props) => {
-	return props.children
+const App = withRouter((props) => {
+	return <>{props.children}</>
 })
 
-export const rootContainer = (container: JSX.Element) => <Root>{container}</Root>
+export function rootContainer(container: JSX.Element) {
+	return (
+		<Provider store={store}>
+			<Router>
+				<App>{container}</App>
+			</Router>
+		</Provider>
+	)
+}
