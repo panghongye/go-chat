@@ -31,5 +31,7 @@ function axios(url: string, method?: Method, data?: any, option?: Option) {
 		})
 }
 
+
+
 export default axios
 export { axios }

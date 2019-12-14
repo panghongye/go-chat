@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Toast } from 'antd-mobile'
-import withRouter from 'umi/withRouter';
+import withRouter from 'umi/withRouter'
+import router from 'umi/router'
 import css from './index.scss'
 import { Button } from 'antd'
 import axios from '../../utils/request'
+import { user } from '../../models_/user'
 
 export default withRouter(function Login(props) {
 	const [ type, typeSet ] = useState(true)
@@ -19,8 +21,10 @@ export default withRouter(function Login(props) {
 				{ loadingText: '请求中...' }
 			)
 			if (!data.success) return
-			if (type) props.history.replace('/')
-			else typeSet(true)
+			if (type) {
+				user.login(data.userInfo)
+				router.replace('/')
+			} else typeSet(true)
 		} catch (error) {
 			Toast.hide()
 		}
@@ -66,3 +70,4 @@ export default withRouter(function Login(props) {
 		</div>
 	)
 })
+
