@@ -19,7 +19,7 @@ const Model = types
 // 单例
 function modelGet() {
 	if (model) return model
-	let info = { b: 1 }
+	let info = {}
 	try {
 		info = Object.assign(info, JSON.parse(localStorage.userInfo))
 	} catch (error) {}

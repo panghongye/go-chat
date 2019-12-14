@@ -3,7 +3,7 @@ import { Toast } from 'antd-mobile'
 import withRouter from 'umi/withRouter';
 import css from './index.scss'
 import { Button } from 'antd'
-import axios from '../../util/request'
+import axios from '../../utils/request'
 
 export default withRouter(function Login(props) {
 	const [ type, typeSet ] = useState(true)
