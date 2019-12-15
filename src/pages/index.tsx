@@ -1,7 +1,7 @@
 import React from 'react'
 import css from './index.scss'
 import { formatMessage } from 'umi-plugin-locale'
-import { SearchBar, Button, WhiteSpace, WingBlank, Icon, List, Modal, InputItem } from 'antd-mobile'
+import { SearchBar, WhiteSpace, WingBlank, Icon, List, Modal, InputItem } from 'antd-mobile'
 import UserAvatar from 'react-user-avatar'
 import withRouter from 'umi/withRouter'
 import { observer } from 'mobx-react'
