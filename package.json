@@ -11,8 +11,7 @@
     "lint:js": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src",
     "lint:prettier": "check-prettier lint",
     "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
-    "prettier": "prettier -c --write \"**/*\"",
-    "precommit": "lint-staged"
+    "prettier": "prettier -c --write \"**/*\""
   },
   "dependencies": {
     "antd": "^3.19.5",
