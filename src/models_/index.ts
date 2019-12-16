@@ -1,4 +1,3 @@
-import { autorun } from "mobx";
 import { connectReduxDevtools } from "mst-middlewares";
 import { getSnapshot, destroy, onSnapshot, types } from "mobx-state-tree";
 import { User, user } from "./user";

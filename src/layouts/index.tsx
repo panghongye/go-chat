@@ -16,7 +16,7 @@ const BaseLayout = observer(props => {
   return (
     <>
       {props.children}
-      {(pathname == "/" || pathname == "/setting") && <TabBar />}
+      {(pathname === "/" || pathname === "/setting") && <TabBar />}
     </>
   );
 });

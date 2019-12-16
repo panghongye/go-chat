@@ -16,6 +16,7 @@ const Model = types
       localStorage.clear();
     }
   }));
+  
 
 let info = { name: "11" };
 try {
