@@ -8,6 +8,19 @@ import io from 'socket.io-client';
 import { user } from '../models_';
 import { socket } from '../utils/socket';
 
+const Item = (props: any) => {
+  const { s } = props;
+  return (
+    <List.Item
+      key={s}
+      onClick={() => {}}
+      thumb={<UserAvatar size="36" name={s} style={{ color: '#FFF' }} />}
+    >
+      {s}
+    </List.Item>
+  );
+};
+
 @observer
 class Index extends React.Component {
   state = {
@@ -27,11 +40,8 @@ class Index extends React.Component {
             style={{ width: '70%' }}
             placeholder="用户/群组"
             onChange={e => this.setState({ search: e })}
-            // onClear={() => {
-            //   this.setState({ search: '' });
-            //   console.log('xxxxxx');
-            // }}
-            // value={this.state.search}
+            // onBlur={this.onSearch}
+            onSubmit={this.onSearch}
           />
           <Icon
             type="plus"
@@ -42,22 +52,24 @@ class Index extends React.Component {
         <WhiteSpace size="md" />
         {this.state.search ? (
           <>
-            <List renderHeader={() => '搜索用户'}></List>
-            <List renderHeader={() => '搜索群组'}></List>
+            <List renderHeader={'所有用户'}>
+              {[0, 1, 2].map(a => {
+                const s = a + '';
+                return <Item key={s} s={s} />;
+              })}
+            </List>
+            <List renderHeader={'所有群组'}>
+              {[0, 1, 2].map(a => {
+                const s = a + '';
+                return <Item key={s} s={s} />;
+              })}
+            </List>
           </>
         ) : (
           <List>
             {[0, 1, 2].map(a => {
               const s = a + '';
-              return (
-                <List.Item
-                  key={s}
-                  onClick={() => {}}
-                  thumb={<UserAvatar size="36" name={s} style={{ color: '#FFF' }} />}
-                >
-                  {s}
-                </List.Item>
-              );
+              return <Item key={s} s={s} />;
             })}
           </List>
         )}
@@ -99,6 +111,11 @@ class Index extends React.Component {
   componentDidMount() {
     socket.connect();
   }
+
+  onSearch = (e: any) => {
+    console.log(e);
+    socket.emitAsync('search', { search: e });
+  };
 
   newGroup = () => {
     Toast.loading('', 0);

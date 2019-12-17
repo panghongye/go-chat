@@ -38,12 +38,12 @@ class Socket {
       console.error(arg);
     });
 
-    this.emitAsync('init', { token: user.info.token }, (...arg: any) => {
+    this.emitAsync('init', { token: user.info.token }).then(r => {
       //todo 返回聊天列表
     });
   };
 
-  emitAsync = async (event: string, data: any, ...args: any[]) => {
+  emitAsync = async (event: string, data: any) => {
     const socket = this.socket || this.connect();
     data.token = user.info.token;
     console.info('【ws ' + event + '】>>', data);
@@ -51,7 +51,7 @@ class Socket {
       try {
         socket.emit(event, data, (res: any) => {
           resolve(res);
-          if (res.msg) {
+          if (res && res.msg) {
             Toast.info(res.msg);
           }
           console.info('【ws ' + event + '】<<', res);
@@ -66,6 +66,5 @@ class Socket {
 }
 
 const socket = new Socket();
-
 export default socket;
 export { socket };
