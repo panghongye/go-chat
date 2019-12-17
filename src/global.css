@@ -11,3 +11,7 @@ body {
 .my-list .spe .am-list-extra {
   flex-basis: initial;
 }
+
+.p-index .am-search-clear {
+  display: none !important;
+}

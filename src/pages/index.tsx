@@ -4,19 +4,17 @@ import { SearchBar, WhiteSpace, WingBlank, Icon, List, Modal, InputItem, Toast }
 import UserAvatar from 'react-user-avatar';
 import withRouter from 'umi/withRouter';
 import { observer } from 'mobx-react';
-import io from 'socket.io-client';
 import { user } from '../models_';
 import { socket } from '../utils/socket';
 
 const Item = (props: any) => {
-  const { s } = props;
+  const { data } = props;
   return (
     <List.Item
-      key={s}
       onClick={() => {}}
-      thumb={<UserAvatar size="36" name={s} style={{ color: '#FFF' }} />}
+      thumb={<UserAvatar size="36" name={data.name} style={{ color: '#FFF' }} />}
     >
-      {s}
+      {data.name}
     </List.Item>
   );
 };
@@ -28,20 +26,30 @@ class Index extends React.Component {
     search: '',
     name: '',
     groupNotice: '',
+    searchResults: { users: [], groups: [] },
+    searchOpen: false,
   };
 
   render() {
+    const { searchResults, search, searchOpen } = this.state;
+    const { groups = [], users = [] } = searchResults;
+    const noData = <div>暂无</div>;
     return (
-      <div>
+      <div className="p-index">
         <WhiteSpace size="sm" />
         <WingBlank className={css['header-wrapper']} size="lg">
           <UserAvatar size="36" name="aa" style={{ color: '#FFF' }} />
           <SearchBar
             style={{ width: '70%' }}
             placeholder="用户/群组"
-            onChange={e => this.setState({ search: e })}
-            // onBlur={this.onSearch}
             onSubmit={this.onSearch}
+            value={search}
+            onChange={e => {
+              if (!e) return this.clearSearch();
+              this.setState({ search: e });
+            }}
+            onClear={this.clearSearch}
+            onCancel={this.clearSearch}
           />
           <Icon
             type="plus"
@@ -50,26 +58,28 @@ class Index extends React.Component {
           />
         </WingBlank>
         <WhiteSpace size="md" />
-        {this.state.search ? (
+        {searchOpen ? (
           <>
             <List renderHeader={'所有用户'}>
-              {[0, 1, 2].map(a => {
-                const s = a + '';
-                return <Item key={s} s={s} />;
-              })}
+              {users.length
+                ? users.map((a: any) => {
+                    return <Item key={a.id} data={a} />;
+                  })
+                : noData}
             </List>
             <List renderHeader={'所有群组'}>
-              {[0, 1, 2].map(a => {
-                const s = a + '';
-                return <Item key={s} s={s} />;
-              })}
+              {groups.length
+                ? groups.map((a: any) => {
+                    return <Item key={a.id} data={a} />;
+                  })
+                : noData}
             </List>
           </>
         ) : (
           <List>
             {[0, 1, 2].map(a => {
               const s = a + '';
-              return <Item key={s} s={s} />;
+              return <Item key={s} data={{ name: s }} />;
             })}
           </List>
         )}
@@ -112,9 +122,21 @@ class Index extends React.Component {
     socket.connect();
   }
 
-  onSearch = (e: any) => {
-    console.log(e);
-    socket.emitAsync('search', { search: e });
+  clearSearch = () => {
+    this.setState({ search: '', searchOpen: false });
+  };
+
+  onSearch = (search: string) => {
+    Toast.loading('', 0);
+    socket
+      .emitAsync('search', { search })
+      .then((r: any) => {
+        this.setState({ searchResults: r.data, search, searchOpen: true });
+        Toast.hide();
+      })
+      .catch(e => {
+        Toast.hide();
+      });
   };
 
   newGroup = () => {
