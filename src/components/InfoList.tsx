@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import socket from '@/utils/socket';
 import { Toast, List, Modal } from 'antd-mobile';
-import { onTouchStart } from '@/utils/fn';
+import { onTouchStart, router_observer, socket } from '@/utils';
 import UserAvatar from 'react-user-avatar';
 
-export default function InfoList(props: {
+export default router_observer(function InfoList(props: {
   lists: any[];
   title?: any;
   clickType: 'getUserInfo' | 'getGroupInfo' | 'chat';
@@ -66,4 +65,4 @@ export default function InfoList(props: {
       </Modal>
     </>
   );
-}
+});

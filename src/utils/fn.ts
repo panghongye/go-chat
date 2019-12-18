@@ -1,3 +1,6 @@
+import { observer, IReactComponent } from 'mobx-react';
+import withRouter from 'umi/withRouter';
+
 function onTouchStart(e: any) {
   // fix touch to scroll background page on iOS
   if (!/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
@@ -21,4 +24,8 @@ function closest(el: any, selector: any) {
   return null;
 }
 
-export { onTouchStart, closest };
+function router_observer(component: IReactComponent) {
+  return withRouter(observer(component));
+}
+
+export { onTouchStart, closest, router_observer };

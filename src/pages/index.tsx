@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import css from './index.scss';
 import { SearchBar, WhiteSpace, WingBlank, Icon, List, Modal, InputItem, Toast } from 'antd-mobile';
 import UserAvatar from 'react-user-avatar';
-import { observer } from 'mobx-react';
 import { user } from '../models';
-import { socket } from '../utils/socket';
 import InfoList from '../components/infoList';
-import { onTouchStart } from '@/utils/fn';
+import { onTouchStart, router_observer, socket } from '@/utils';
 
-@observer
 class Index extends React.Component {
   state = {
     modal1: false,
@@ -20,6 +17,7 @@ class Index extends React.Component {
   };
 
   render() {
+    global.p = this.props;
     const { searchResults, search, searchOpen } = this.state;
     const { groups = [], users = [] } = searchResults;
     return (
@@ -136,5 +134,4 @@ class Index extends React.Component {
     });
   };
 }
-
 export default Index;

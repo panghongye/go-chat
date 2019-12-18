@@ -4,10 +4,10 @@ import withRouter from 'umi/withRouter';
 import router from 'umi/router';
 import css from './index.scss';
 import { Button } from 'antd';
-import axios from '../../utils/request';
-import { user } from '../../models/user';
+import { axios } from '../../utils';
+import { user } from '../../models';
 
-export default withRouter(function Login(props) {
+export default function Login() {
   const [type, typeSet] = useState(true);
   const [name, nameSet] = useState('');
   const [password, passwordSet] = useState('');
@@ -67,4 +67,4 @@ export default withRouter(function Login(props) {
       </div>
     </div>
   );
-});
+}
