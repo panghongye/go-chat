@@ -1,10 +1,10 @@
-import { getSnapshot, destroy, onSnapshot, types } from "mobx-state-tree";
+import { getSnapshot, destroy, onSnapshot, types } from 'mobx-state-tree';
 
 type Info = { name?: string; token?: string; id?: number };
 
-const Model = types
+const User = types
   .model({
-    info: types.frozen({} as Info)
+    info: types.frozen({} as Info),
   })
   .actions(self => ({
     login(user: Info) {
@@ -14,15 +14,14 @@ const Model = types
     logout() {
       self.info = {};
       localStorage.clear();
-    }
+    },
   }));
-  
 
-let info = { name: "11" };
+let info = { name: '' };
 try {
   info = Object.assign(info, JSON.parse(localStorage.userInfo));
 } catch (error) {}
-const user = Model.create({ info });
 
+const user = User.create({ info });
 export default user;
-export { Model as User, user };
+export { User, user };
