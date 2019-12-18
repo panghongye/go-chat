@@ -17,7 +17,6 @@ class Index extends React.Component {
   };
 
   render() {
-    global.p = this.props;
     const { searchResults, search, searchOpen } = this.state;
     const { groups = [], users = [] } = searchResults;
     return (
