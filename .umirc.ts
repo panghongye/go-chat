@@ -17,8 +17,10 @@ const config: IConfig = {
       'umi-plugin-react',
       {
         antd: true,
-        dva: false,
-        // dynamicImport: { webpackChunkName: true },
+        dva: {
+          immer: true,
+        },
+        dynamicImport: { webpackChunkName: true },
         title: 'chat',
         dll: true,
         locale: {

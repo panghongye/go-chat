@@ -5,9 +5,11 @@ import router from 'umi/router';
 import css from './index.scss';
 import { Button } from 'antd';
 import axios from '../../utils/request';
-import { user } from '../../models/user';
+import { ConnectState } from '@/models';
+import { connect } from '@/utils';
 
-export default withRouter(function Login(props) {
+function Login(props: any) {
+  const { user, dispatch } = props;
   const [type, typeSet] = useState(true);
   const [name, nameSet] = useState('');
   const [password, passwordSet] = useState('');
@@ -22,7 +24,7 @@ export default withRouter(function Login(props) {
       );
       if (data.code !== 0) return;
       if (type) {
-        user.login(data.data);
+        dispatch({ type: 'user/login', payload: data.data });
         router.replace('/');
       } else typeSet(true);
     } catch (error) {
@@ -67,4 +69,8 @@ export default withRouter(function Login(props) {
       </div>
     </div>
   );
-});
+}
+
+export default connect(({ user }) => ({
+  user,
+}))(Login);

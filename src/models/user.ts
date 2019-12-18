@@ -1,28 +1,43 @@
-import { getSnapshot, destroy, onSnapshot, types } from "mobx-state-tree";
+import { Reducer } from 'redux';
 
-type Info = { name?: string; token?: string; id?: number };
+export interface TypeUserState {
+  name?: string;
+  token?: string;
+  id?: number;
+}
 
-const Model = types
-  .model({
-    info: types.frozen({} as Info)
-  })
-  .actions(self => ({
-    login(user: Info) {
-      self.info = { ...self.info, ...user };
-      localStorage.userInfo = JSON.stringify(self.info);
+export interface TypeUserModel {
+  namespace: string;
+  state: TypeUserState;
+  effects: {};
+  reducers: {
+    [x: string]: Reducer<TypeUserState>;
+  };
+}
+
+function initState(): TypeUserState {
+  let d = { name: '', token: '', id: 0 };
+  try {
+    d = { ...d, ...JSON.parse(localStorage.userInfo) };
+  } catch (error) {}
+  return d;
+}
+
+const Mode: TypeUserModel = {
+  namespace: 'user',
+  state: initState(),
+  effects: {},
+  reducers: {
+    login(state, { payload }) {
+      const d = { ...state, ...payload };
+      localStorage.userInfo = JSON.stringify(d);
+      return d;
     },
-    logout() {
-      self.info = {};
+    logout(state) {
       localStorage.clear();
-    }
-  }));
-  
+      return initState();
+    },
+  },
+};
 
-let info = { name: "11" };
-try {
-  info = Object.assign(info, JSON.parse(localStorage.userInfo));
-} catch (error) {}
-const user = Model.create({ info });
-
-export default user;
-export { Model as User, user };
+export default Mode;

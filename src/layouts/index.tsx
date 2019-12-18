@@ -1,13 +1,13 @@
 import React from 'react';
-import withRouter from 'umi/withRouter';
 import TabBar from '../components/tabBar';
-import { observer } from 'mobx-react';
 import router from 'umi/router';
-import { user } from '../models/index';
+import { connect } from '@/utils';
 
-const BaseLayout = observer(props => {
+const BaseLayout = (props: any) => {
+  console.warn(props, 22);
+  const { user } = props;
   const pathname = props.location.pathname;
-  if (!user.info.token && pathname != '/login') {
+  if (!user.token && pathname != '/login') {
     router.replace('/login');
     return null;
   }
@@ -18,6 +18,8 @@ const BaseLayout = observer(props => {
       {(pathname === '/' || pathname === '/setting') && <TabBar />}
     </>
   );
-});
+};
 
-export default withRouter(BaseLayout);
+export default connect(({ user }) => {
+  return { user };
+})(BaseLayout);

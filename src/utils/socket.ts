@@ -1,13 +1,20 @@
 import io from 'socket.io-client';
-import { user } from '../models/index';
 import { Toast, Modal } from 'antd-mobile';
 
 class Socket {
   socket: SocketIOClient.Socket | undefined;
 
+  get user() {
+    return global.g_app._store.getState().user;
+  }
+
+  get dispatch() {
+    return global.g_app._store.dispatch;
+  }
+
   connect = () => {
     const socket = io('127.0.0.1:3000', {
-      query: { token: user.info.token },
+      query: { token: this.user.token },
     });
     this.socket = socket;
     this.init();
@@ -24,11 +31,11 @@ class Socket {
       console.log('reconnect_attempt', attempt);
       if (attempt >= 4) {
         socket.disconnect();
-        return user.logout();
+        return this.dispatch({ type: 'user/logout' });
         Modal.alert('登录过期，请重新登录', '', [
           {
             text: 'OK',
-            onPress: user.logout,
+            onPress: () => this.dispatch({ type: 'user/logout' }),
           },
         ]);
       }
@@ -38,14 +45,14 @@ class Socket {
       console.error(arg);
     });
 
-    this.emitAsync('init', { token: user.info.token }).then(r => {
+    this.emitAsync('init', { token: this.user.token }).then(r => {
       //todo 返回聊天列表
     });
   };
 
   emitAsync = async (event: string, data: any) => {
     const socket = this.socket || this.connect();
-    data.token = user.info.token;
+    data.token = this.user.token;
     console.info('【ws ' + event + '】>>', data);
     return new Promise((resolve, reject) => {
       try {

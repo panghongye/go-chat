@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch } from 'react';
 import css from './index.scss';
 import { SearchBar, WhiteSpace, WingBlank, Icon, List, Modal, InputItem, Toast } from 'antd-mobile';
 import UserAvatar from 'react-user-avatar';
-import { observer } from 'mobx-react';
-import { user } from '../models';
-import { socket } from '../utils/socket';
 import InfoList from '../components/infoList';
-import { onTouchStart } from '@/utils/fn';
+import { onTouchStart, socket, connect } from '@/utils';
+import { TypeUserState } from '@/models';
 
-@observer
-class Index extends React.Component {
+class Index extends React.Component<{ user: TypeUserState }> {
   state = {
     modal1: false,
     search: '',
@@ -118,7 +115,7 @@ class Index extends React.Component {
       .emitAsync('newGroup', {
         name: this.state.name,
         intro: this.state.intro,
-        userID: user.info.id,
+        userID: this.props.user.id,
       })
       .then(group => {
         Toast.hide();
@@ -137,4 +134,4 @@ class Index extends React.Component {
   };
 }
 
-export default Index;
+export default connect(({ user }) => ({ user }))(Index);

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import socket from '@/utils/socket';
 import { Toast, List, Modal } from 'antd-mobile';
-import { onTouchStart } from '@/utils/fn';
+import { onTouchStart } from '@/utils';
 import UserAvatar from 'react-user-avatar';
 
 export default function InfoList(props: {

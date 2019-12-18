@@ -1,3 +1,6 @@
+import { connect as c } from 'dva';
+import { ConnectState } from '@/models';
+
 function onTouchStart(e: any) {
   // fix touch to scroll background page on iOS
   if (!/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
@@ -21,4 +24,8 @@ function closest(el: any, selector: any) {
   return null;
 }
 
-export { onTouchStart, closest };
+function connect(mapStateToProps: (state: ConnectState) => ConnectState) {
+  return c(mapStateToProps);
+}
+
+export { onTouchStart, closest, connect };
