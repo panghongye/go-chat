@@ -4,7 +4,9 @@
     "start": "umi dev",
     "build": "umi build",
     "test": "umi test",
-    "l": "eslint src"
+    "lint:es": "eslint --ext .js src mock tests",
+    "lint:ts": "tslint \"src/**/*.ts\" \"src/**/*.tsx\"",
+    "precommit_": "lint-staged"
   },
   "dependencies": {
     "antd": "^3.19.5",
@@ -26,7 +28,6 @@
     "@types/react-test-renderer": "^16.0.3",
     "@types/socket.io-client": "^1.4.32",
     "babel-eslint": "^9.0.0",
-    "dva-logger": "^1.0.0",
     "eslint": "^5.4.0",
     "eslint-config-umi": "^1.4.0",
     "eslint-plugin-flowtype": "^2.50.0",
@@ -48,14 +49,8 @@
     "umi-types": "^0.3.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "tslint --fix",
-      "git add"
-    ],
-    "*.{js,jsx}": [
-      "eslint --fix",
-      "git add"
-    ]
+    "*.{ts,tsx}": ["tslint --fix", "git add"],
+    "*.{js,jsx}": ["eslint --fix", "git add"]
   },
   "engines": {
     "node": ">=8.0.0"

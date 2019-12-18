@@ -1,4 +1,4 @@
-import { IConfig } from "umi-types";
+import { IConfig } from 'umi-types';
 
 // ref: https://umijs.org/config/
 const config: IConfig = {
@@ -14,16 +14,16 @@ const config: IConfig = {
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     [
-      "umi-plugin-react",
+      'umi-plugin-react',
       {
         antd: true,
-        dva: true,
-        dynamicImport: { webpackChunkName: true },
-        title: "chat",
+        dva: false,
+        // dynamicImport: { webpackChunkName: true },
+        title: 'chat',
         dll: true,
         locale: {
           enable: true,
-          default: "en-US"
+          default: 'en-US',
         },
         routes: {
           exclude: [
@@ -31,12 +31,12 @@ const config: IConfig = {
             /services\//,
             /model\.(t|j)sx?$/,
             /service\.(t|j)sx?$/,
-            /components\//
-          ]
-        }
-      }
-    ]
-  ]
+            /components\//,
+          ],
+        },
+      },
+    ],
+  ],
 };
 
 export default config;
