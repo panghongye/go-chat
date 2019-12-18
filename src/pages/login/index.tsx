@@ -5,7 +5,7 @@ import router from 'umi/router';
 import css from './index.scss';
 import { Button } from 'antd';
 import axios from '../../utils/request';
-import { user } from '../../models_/user';
+import { user } from '../../models/user';
 
 export default withRouter(function Login(props) {
   const [type, typeSet] = useState(true);

@@ -1,7 +1,6 @@
 import Axios, { Method, AxiosRequestConfig } from 'axios';
 import { Toast } from 'antd-mobile';
 
-
 interface AxiosOption extends AxiosRequestConfig {
   loadingText?: string;
 }
@@ -9,7 +8,7 @@ interface AxiosOption extends AxiosRequestConfig {
 async function axios(url: string, method?: Method, data?: any, option?: AxiosOption) {
   url = '//127.0.0.1:3000/api/v1' + url;
   const loadingText = option && option.loadingText;
-  if (loadingText) Toast.loading(loadingText, 0);
+  if (loadingText) Toast.loading(loadingText, 10);
   return Axios({ url, method: method || 'POST', data })
     .then((res: any) => {
       if (loadingText) Toast.hide();

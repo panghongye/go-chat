@@ -1,23 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import css from './index.scss';
 import { SearchBar, WhiteSpace, WingBlank, Icon, List, Modal, InputItem, Toast } from 'antd-mobile';
 import UserAvatar from 'react-user-avatar';
-import withRouter from 'umi/withRouter';
 import { observer } from 'mobx-react';
-import { user } from '../models_';
+import { user } from '../models';
 import { socket } from '../utils/socket';
-
-const Item = (props: any) => {
-  const { data } = props;
-  return (
-    <List.Item
-      onClick={() => {}}
-      thumb={<UserAvatar size="36" name={data.name} style={{ color: '#FFF' }} />}
-    >
-      {data.name}
-    </List.Item>
-  );
-};
+import InfoList from '../components/infoList';
+import { onTouchStart } from '@/utils/fn';
 
 @observer
 class Index extends React.Component {
@@ -25,7 +14,7 @@ class Index extends React.Component {
     modal1: false,
     search: '',
     name: '',
-    groupNotice: '',
+    intro: '',
     searchResults: { users: [], groups: [] },
     searchOpen: false,
   };
@@ -33,7 +22,6 @@ class Index extends React.Component {
   render() {
     const { searchResults, search, searchOpen } = this.state;
     const { groups = [], users = [] } = searchResults;
-    const noData = <div>暂无</div>;
     return (
       <div className="p-index">
         <WhiteSpace size="sm" />
@@ -60,32 +48,15 @@ class Index extends React.Component {
         <WhiteSpace size="md" />
         {searchOpen ? (
           <>
-            <List renderHeader={'所有用户'}>
-              {users.length
-                ? users.map((a: any) => {
-                    return <Item key={a.id} data={a} />;
-                  })
-                : noData}
-            </List>
-            <List renderHeader={'所有群组'}>
-              {groups.length
-                ? groups.map((a: any) => {
-                    return <Item key={a.id} data={a} />;
-                  })
-                : noData}
-            </List>
+            <InfoList lists={users} title="所有用户" clickType="getUserInfo" />
+            <InfoList lists={groups} title="所有群组" clickType="getGroupInfo" />
           </>
         ) : (
-          <List>
-            {[0, 1, 2].map(a => {
-              const s = a + '';
-              return <Item key={s} data={{ name: s }} />;
-            })}
-          </List>
+          <InfoList lists={[{ name: 1 }]} clickType="chat" />
         )}
         <Modal
           visible={this.state.modal1}
-          afterClose={() => this.setState({ name: '', groupNotice: '' })}
+          afterClose={() => this.setState({ name: '', intro: '' })}
           bodyStyle={{ padding: 0 }}
           transparent={true}
           maskClosable={false}
@@ -103,14 +74,16 @@ class Index extends React.Component {
               onPress: this.newGroup,
             },
           ]}
-          wrapProps={{ onTouchStart: this.onWrapTouchStart }}
+          wrapProps={{
+            onTouchStart,
+          }}
         >
           <div style={{ height: 100 }}>
             <InputItem onInput={e => this.setState({ name: e.currentTarget.value })}>
               名称:
             </InputItem>
             <InputItem onInput={e => this.setState({ name: e.currentTarget.value })}>
-              公告:
+              简介:
             </InputItem>
           </div>
         </Modal>
@@ -127,7 +100,7 @@ class Index extends React.Component {
   };
 
   onSearch = (search: string) => {
-    Toast.loading('', 0);
+    Toast.loading('', 10);
     socket
       .emitAsync('search', { search })
       .then((r: any) => {
@@ -140,11 +113,11 @@ class Index extends React.Component {
   };
 
   newGroup = () => {
-    Toast.loading('', 0);
+    Toast.loading('', 10);
     socket
       .emitAsync('newGroup', {
         name: this.state.name,
-        groupNotice: this.state.groupNotice,
+        intro: this.state.intro,
         userID: user.info.id,
       })
       .then(group => {
@@ -159,32 +132,9 @@ class Index extends React.Component {
     this.setState({
       [key]: false,
       name: '',
-      groupNotice: '',
+      intro: '',
     });
   };
-
-  onWrapTouchStart = (e: any) => {
-    // fix touch to scroll background page on iOS
-    if (!/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
-      return;
-    }
-    const pNode = closest(e.target, '.am-modal-content');
-    if (!pNode) {
-      e.preventDefault();
-    }
-  };
 }
 
-export default withRouter(Index);
-
-function closest(el: any, selector: any) {
-  const matchesSelector =
-    el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
-  while (el) {
-    if (matchesSelector.call(el, selector)) {
-      return el;
-    }
-    el = el.parentElement;
-  }
-  return null;
-}
+export default Index;

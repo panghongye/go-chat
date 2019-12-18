@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import { user } from '../models_/index';
+import { user } from '../models/index';
 import { Toast, Modal } from 'antd-mobile';
 
 class Socket {
