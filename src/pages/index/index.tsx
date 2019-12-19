@@ -2,8 +2,8 @@ import React from 'react';
 import css from './index.scss';
 import { SearchBar, WhiteSpace, WingBlank, Icon, List, Modal, InputItem, Toast } from 'antd-mobile';
 import UserAvatar from 'react-user-avatar';
-import { user } from '../models';
-import InfoList from '../components/infoList';
+import { user } from '../../models';
+import InfoList from '../../components/infoList';
 import { onTouchStart, router_observer, socket } from '@/utils';
 
 class Index extends React.Component {
@@ -13,7 +13,7 @@ class Index extends React.Component {
     name: '',
     intro: '',
     searchResults: { users: [], groups: [] },
-    searchOpen: false,
+    searchOpen: false
   };
 
   render() {
@@ -23,7 +23,7 @@ class Index extends React.Component {
       <div className="p-index">
         <WhiteSpace size="sm" />
         <WingBlank className={css['header-wrapper']} size="lg">
-          <UserAvatar size="36" name="aa" style={{ color: '#FFF' }} />
+          <UserAvatar size="36" name={user.info.name} style={{ color: '#FFF' }} />
           <SearchBar
             style={{ width: '70%' }}
             placeholder="用户/群组"
@@ -49,8 +49,8 @@ class Index extends React.Component {
             <InfoList lists={groups} title="所有群组" clickType="getGroupInfo" />
           </>
         ) : (
-          <InfoList lists={[{ name: 1 }]} clickType="chat" />
-        )}
+            <InfoList lists={user.groups} clickType="chat" />
+          )}
         <Modal
           visible={this.state.modal1}
           afterClose={() => this.setState({ name: '', intro: '' })}
@@ -64,32 +64,24 @@ class Index extends React.Component {
               text: '取消',
               onPress: () => {
                 this.onClose('modal1')();
-              },
+              }
             },
             {
               text: '确定',
-              onPress: this.newGroup,
-            },
+              onPress: this.newGroup
+            }
           ]}
           wrapProps={{
-            onTouchStart,
+            onTouchStart
           }}
         >
           <div style={{ height: 100 }}>
-            <InputItem onInput={e => this.setState({ name: e.currentTarget.value })}>
-              名称:
-            </InputItem>
-            <InputItem onInput={e => this.setState({ name: e.currentTarget.value })}>
-              简介:
-            </InputItem>
+            <InputItem onInput={e => this.setState({ name: e.currentTarget.value })}>名称:</InputItem>
+            <InputItem onInput={e => this.setState({ intro: e.currentTarget.value })}>简介:</InputItem>
           </div>
         </Modal>
       </div>
     );
-  }
-
-  componentDidMount() {
-    socket.connect();
   }
 
   clearSearch = () => {
@@ -115,7 +107,7 @@ class Index extends React.Component {
       .emitAsync('newGroup', {
         name: this.state.name,
         intro: this.state.intro,
-        userID: user.info.id,
+        userID: user.info.id
       })
       .then(group => {
         Toast.hide();
@@ -129,8 +121,8 @@ class Index extends React.Component {
     this.setState({
       [key]: false,
       name: '',
-      intro: '',
+      intro: ''
     });
   };
 }
-export default Index;
+export default router_observer(Index);

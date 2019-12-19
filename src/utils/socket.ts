@@ -3,68 +3,84 @@ import { user } from '../models/index';
 import { Toast, Modal } from 'antd-mobile';
 
 class Socket {
-  socket: SocketIOClient.Socket | undefined;
+	socket: SocketIOClient.Socket | undefined;
 
-  connect = () => {
-    const socket = io('127.0.0.1:3000', {
-      query: { token: user.info.token },
-    });
-    this.socket = socket;
-    this.init();
-    return socket;
-  };
+	connect = () => {
+		const socket = io('127.0.0.1:3000', {
+			query: { token: user.info.token }
+		});
+		this.socket = socket;
+		this.init();
+		return socket;
+	};
 
-  init = () => {
-    const socket = this.socket || this.connect();
-    socket.on('reconnect_error', (err: Error) => {
-      console.log('reconnect_error', err);
-    });
+	init = () => {
+		const socket = this.socket || this.connect();
+		socket.on('reconnect_error', (err: Error) => {
+			console.log('reconnect_error', err);
+		});
 
-    socket.on('reconnect_attempt', (attempt: number) => {
-      console.log('reconnect_attempt', attempt);
-      if (attempt >= 4) {
-        socket.disconnect();
-        return user.logout();
-        Modal.alert('登录过期，请重新登录', '', [
-          {
-            text: 'OK',
-            onPress: user.logout,
-          },
-        ]);
-      }
-    });
+		socket.on('reconnect_attempt', (attempt: number) => {
+			console.log('reconnect_attempt', attempt);
+			if (attempt >= 4) {
+				socket.disconnect();
+				return user.logout();
+				Modal.alert('登录过期，请重新登录', '', [
+					{
+						text: 'OK',
+						onPress: user.logout
+					}
+				]);
+			}
+		});
 
-    socket.on('error', (...arg: any) => {
-      console.error(arg);
-    });
+		socket.on('error', (...arg: any) => {
+			console.error(arg);
+		});
 
-    this.emitAsync('init', { token: user.info.token }).then(r => {
-      //todo 返回聊天列表
-    });
-  };
+		socket.on('sendGroupMsg', (res: any) => {
+			const { data = {} } = res;
+			const groups = user.groups.slice();
+			for (let i = 0; i < groups.length; i++) {
+				const group = groups[i];
+				if (group.id == data.groupID) {
+					group.msgs.push(data);
+					break;
+				}
+			}
+			user.groupsSet(groups);
+		});
 
-  emitAsync = async (event: string, data: any) => {
-    const socket = this.socket || this.connect();
-    data.token = user.info.token;
-    console.info('【ws ' + event + '】>>', data);
-    return new Promise((resolve, reject) => {
-      try {
-        socket.emit(event, data, (res: any) => {
-          resolve(res);
-          if (res && res.msg) {
-            Toast.info(res.msg);
-          }
-          console.info('【ws ' + event + '】<<', res);
-        });
-      } catch (error) {
-        Toast.info(error);
-        console.info('【ws ' + event + 'err】>>', error);
-        reject(error);
-      }
-    });
-  };
+		this.emitAsync('init', { token: user.info.token }).then((r: any) => {
+			//todo 返回聊天列表
+			console.log(r);
+			user.groupsSet(r.data.groups);
+		});
+	};
+
+	emitAsync = async (event: string, data: any) => {
+		const socket = this.socket || this.connect();
+		data.token = user.info.token;
+		console.info('【ws ' + event + '】>>', data);
+		return new Promise((resolve, reject) => {
+			try {
+				socket.emit(event, data, (res: any) => {
+					resolve(res);
+					if (res && res.msg) {
+						Toast.info(res.msg);
+					}
+					console.info('【ws ' + event + '】<<', res);
+				});
+			} catch (error) {
+				Toast.info(error);
+				console.info('【ws ' + event + 'err】>>', error);
+				reject(error);
+			}
+		});
+	};
 }
 
 const socket = new Socket();
+global.so = socket;
 export default socket;
 export { socket };

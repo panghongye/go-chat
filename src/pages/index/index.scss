@@ -1,0 +1,11 @@
+.header-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+:global {
+	.p-index .am-search-clear {
+		display: none !important;
+	}
+}

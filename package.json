@@ -4,7 +4,7 @@
     "start": "umi dev",
     "build": "umi build",
     "test": "umi test",
-    "lint:es": "eslint --ext .js src mock tests",
+    "lint:es": "eslint --ext .js src",
     "lint:ts": "tslint \"src/**/*.ts\" \"src/**/*.tsx\"",
     "precommit_": "lint-staged"
   },
