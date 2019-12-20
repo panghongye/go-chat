@@ -1,5 +1,5 @@
 import { getSnapshot, destroy, onSnapshot, types } from 'mobx-state-tree';
-
+import { socket } from '../utils';
 type Info = { name?: string; token?: string; id?: number };
 
 const User = types
@@ -34,6 +34,7 @@ const User = types
 		logout() {
 			self.info = {};
 			localStorage.clear();
+			socket.socket?.close()
 		},
 		groupsSet(groups: any) {
 			self.groups = groups;
@@ -43,8 +44,12 @@ const User = types
 let info = { name: '' };
 try {
 	info = Object.assign(info, JSON.parse(localStorage.userInfo));
-} catch (error) {}
+} catch (error) { }
+
 
 const user = User.create({ info, groups: [] });
 export default user;
 export { User, user };
+
+
+global.u = user

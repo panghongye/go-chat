@@ -15,7 +15,7 @@ const store = Store.create({ user });
 connectReduxDevtools(require('remotedev').default, store); // 连接 Chrome Redux DevTool
 // store 快照
 onSnapshot(store, (snapshot) => {
-	console.log('onSnapshot', snapshot);
+	// console.log('onSnapshot', snapshot);
 });
 
 export default store;

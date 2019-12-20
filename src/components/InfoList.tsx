@@ -18,7 +18,6 @@ export default router_observer(function InfoList(props: {
   const noData = <div style={{ padding: '4px 15px', background: '#f5f5f9' }}>暂无</div>;
 
   function onClickType(info: Info) {
-    console.log(info);
     infoSet(info);
     if (clickType === 'chat') {
       return chat(info);
@@ -36,7 +35,7 @@ export default router_observer(function InfoList(props: {
   function goChat(info: Info) {
     props.history.push({
       pathname: '/chat',
-      query: info,
+      query: { id: info.id },
     });
   }
 

@@ -1,18 +1,18 @@
-import { router_observer, socket } from '@/utils';
+import { router_observer, socket, scrollToBottom } from '@/utils';
 import { user } from '@/models';
 import { NavBar, Icon, InputItem, Toast } from 'antd-mobile';
 import css from './index.scss';
 import { Button } from 'antd';
-import React from 'react';
+import React, { createRef } from 'react';
 
 class Chat extends React.Component<any> {
-  state = { text: '' };
+  state = { msg: '' };
+  id = this.props.location.query.id
 
   render() {
     const { props } = this;
-    const info = props.location.query;
     const group = user.groups.find((group) => {
-      return group.id == info.id;
+      return this.id == group.id;
     });
     const msgs = group?.msgs || [] as any
     return (
@@ -23,16 +23,18 @@ class Chat extends React.Component<any> {
           onLeftClick={props.history.goBack}
           rightContent={[<Icon key="1" type="ellipsis" />]}
         >
-          {info.name}
+          {group?.name}
         </NavBar>
-        <div style={{ flex: 1 }}>{
+        <div id='chat-msgs-div' className={css.msgs} >{
           msgs.map((msg: any) => {
             return <div key={msg.id}>{msg.msg}</div>
           })
         }</div>
         <InputItem
           placeholder="随便聊点啥吧"
-          onChange={(text) => this.setState({ text })}
+          value={this.state.msg}
+          onChange={(msg) => this.setState({ msg })}
+          onSubmit={this.send}
           extra={<Button type="primary" onClick={this.send}>发送</Button>}
         />
       </div>
@@ -40,13 +42,19 @@ class Chat extends React.Component<any> {
   }
 
   send = () => {
-    socket.emitAsync('sendGroupMsg', { msg: this.state.text }).then(
+    const { msg } = this.state
+    if (!msg) return
+    socket.emitAsync('sendGroupMsg', { msg, name: user.info.name, groupID: this.id }).then(
       r => {
-        this.setState({ text: '' })
+        this.setState({ msg: '' })
       }
     ).catch(r => {
       Toast.info('发送失败')
     })
+  }
+
+  componentDidMount() {
+    setTimeout(scrollToBottom, 1000)
   }
 }
 

@@ -2,10 +2,18 @@
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+}
 
-	:global {
-		.am-input-extra {
-			max-height: initial !important;
-		}
+.msgs {
+	flex: 1;
+	overflow: auto;
+	border: 1px solid #ddd;
+	border-left: 0;
+	border-right: 0;
+}
+
+.p-chat :global {
+	.am-input-extra {
+		max-height: initial !important;
 	}
 }
