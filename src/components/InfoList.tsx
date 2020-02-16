@@ -20,7 +20,7 @@ export default router_observer(function InfoList(props: {
   function onListClick(info: Info) {
     infoSet(info);
     if (clickType === 'chat') {
-      return chat(info);
+      return goChat(info);
     }
     visibleSet(true);
     // socket
@@ -33,34 +33,14 @@ export default router_observer(function InfoList(props: {
   }
 
   // 开始聊天
-  function startChat(info: Info) {
+  function goChat(info: Info) {
     props.history.push({
       pathname: '/chat',
       query: { id: info.id },
     });
   }
 
-  function chat(info: Info) {
-    if (clickType === 'getGroupInfo') {
-      socket
-        .emitAsync('joinGroup', { groupID: info.id, userName: user.info.name })
-        .then(r => { startChat(info) })
-        .catch(e => {
-          Toast.info('加入聊天失败，请重试');
-        });
-    }
-    if (clickType === 'getUserInfo') {
-      socket
-        .emitAsync('newFriend', { toUserID: info.id })
-        .then(r => { startChat(info) })
-        .catch(e => {
-          Toast.info('加入聊天失败，请重试');
-        });
-    }
 
-    startChat(info);
-
-  }
 
   return (
     <>
@@ -100,7 +80,35 @@ export default router_observer(function InfoList(props: {
           size="small"
           type="primary"
           onClick={() => {
-            startChat(info);
+            if (clickType === 'chat') {
+              return goChat(info);
+            }
+
+            if (clickType === 'getGroupInfo') {
+              socket
+                .emitAsync('joinGroup', { groupID: info.id, userName: user.info.name })
+                .then(r => {
+                  socket.getAll().then(r => {
+                    goChat(info)
+                  })
+                })
+                .catch(e => {
+                  Toast.info('加入聊天失败，请重试');
+                });
+            }
+            if (clickType === 'getUserInfo') {
+              socket
+                .emitAsync('newFriend', { toUserID: info.id })
+                .then(r => {
+                  socket.getAll().then(r => {
+                    goChat(info)
+                  })
+                })
+                .catch(e => {
+                  Toast.info('加入聊天失败，请重试');
+                });
+            }
+
           }}
         >
           开始聊天
