@@ -5,6 +5,7 @@ import UserAvatar from 'react-user-avatar';
 import { user } from '../../models';
 import InfoList from '../../components/infoList';
 import { onTouchStart, router_observer, socket } from '@/utils';
+import { tuple } from 'antd/lib/_util/type';
 
 class Index extends React.Component {
   state = {
@@ -93,6 +94,9 @@ class Index extends React.Component {
     socket
       .emitAsync('search', { search })
       .then((r: any) => {
+        r.data.users = r?.data?.users.filter((a: any) => {
+          return a?.id != user.info.id
+        })
         this.setState({ searchResults: r.data, search, searchOpen: true });
         Toast.hide();
       })
@@ -111,7 +115,9 @@ class Index extends React.Component {
       })
       .then(group => {
         Toast.hide();
-        console.log('创建成功', group); //todo
+        console.log('创建成功', group);
+        //todo
+        location.reload()
         this.onClose('modal1')();
       })
       .catch(e => Toast.hide());

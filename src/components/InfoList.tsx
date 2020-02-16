@@ -17,7 +17,7 @@ export default router_observer(function InfoList(props: {
   const [info, infoSet] = useState({ name: '', intro: '', id: '' } as Info);
   const noData = <div style={{ padding: '4px 15px', background: '#f5f5f9' }}>暂无</div>;
 
-  function onClickType(info: Info) {
+  function onListClick(info: Info) {
     infoSet(info);
     if (clickType === 'chat') {
       return chat(info);
@@ -32,7 +32,8 @@ export default router_observer(function InfoList(props: {
     //   });
   }
 
-  function goChat(info: Info) {
+  // 开始聊天
+  function startChat(info: Info) {
     props.history.push({
       pathname: '/chat',
       query: { id: info.id },
@@ -43,20 +44,22 @@ export default router_observer(function InfoList(props: {
     if (clickType === 'getGroupInfo') {
       socket
         .emitAsync('joinGroup', { groupID: info.id, userName: user.info.name })
-        .then(r => { })
+        .then(r => { startChat(info) })
         .catch(e => {
           Toast.info('加入聊天失败，请重试');
         });
     }
     if (clickType === 'getUserInfo') {
       socket
-        .emitAsync('newContact', { toUserID: info.id })
-        .then(r => { })
+        .emitAsync('newFriend', { toUserID: info.id })
+        .then(r => { startChat(info) })
         .catch(e => {
           Toast.info('加入聊天失败，请重试');
         });
     }
-    goChat(info);
+
+    startChat(info);
+
   }
 
   return (
@@ -67,7 +70,7 @@ export default router_observer(function InfoList(props: {
             return (
               <List.Item
                 key={JSON.stringify(a)}
-                onClick={() => onClickType(a)}
+                onClick={() => onListClick(a)}
                 thumb={<UserAvatar size="36" name={a.name + ''} style={{ color: '#FFF' }} />}
               >
                 {a.name}
@@ -97,7 +100,7 @@ export default router_observer(function InfoList(props: {
           size="small"
           type="primary"
           onClick={() => {
-            goChat(info);
+            startChat(info);
           }}
         >
           开始聊天

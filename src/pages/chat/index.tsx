@@ -3,7 +3,7 @@ import { user } from '@/models';
 import { NavBar, Icon, InputItem, Toast } from 'antd-mobile';
 import css from './index.scss';
 import { Button } from 'antd';
-import React, { createRef } from 'react';
+import React, { } from 'react';
 
 class Chat extends React.Component<any> {
   state = { msg: '' };
@@ -44,7 +44,7 @@ class Chat extends React.Component<any> {
   send = () => {
     const { msg } = this.state
     if (!msg) return
-    socket.emitAsync('sendGroupMsg', { msg, name: user.info.name, groupID: this.id }).then(
+    socket.emitAsync('sendGroupMsg', { msg, name: user.info.name, groupID: this.id + '' }).then(
       r => {
         this.setState({ msg: '' })
       }
