@@ -5,7 +5,6 @@ import UserAvatar from 'react-user-avatar';
 import { user } from '../../models';
 import InfoList from '../../components/infoList';
 import { onTouchStart, router_observer, socket } from '@/utils';
-import { tuple } from 'antd/lib/_util/type';
 
 class Index extends React.Component {
   state = {
@@ -24,7 +23,7 @@ class Index extends React.Component {
       <div className="p-index">
         <WhiteSpace size="sm" />
         <WingBlank className={css['header-wrapper']} size="lg">
-          <UserAvatar size="36" name={user.info.name} style={{ color: '#FFF' }} />
+          <UserAvatar size="36" name={user?.info?.name +''} style={{ color: '#FFF' }} />
           <SearchBar
             style={{ width: '70%' }}
             placeholder="用户/群组"

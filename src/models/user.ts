@@ -32,9 +32,10 @@ const User = types
 			localStorage.userInfo = JSON.stringify(self.info);
 		},
 		logout() {
+			socket.socket?.close()
 			self.info = {};
 			localStorage.clear();
-			socket.socket?.close()
+			location.replace('/login')
 		},
 		groupsSet(groups: any) {
 			self.groups = groups;

@@ -51,7 +51,7 @@ export default router_observer(function InfoList(props: {
               <List.Item
                 key={JSON.stringify(a)}
                 onClick={() => onListClick(a)}
-                thumb={<UserAvatar size="36" name={a.name + ''} style={{ color: '#FFF' }} />}
+                thumb={<UserAvatar size="36" name={a?.name + ''} style={{ color: '#FFF' }} />}
               >
                 {a.name}
               </List.Item>

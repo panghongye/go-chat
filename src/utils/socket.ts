@@ -14,8 +14,7 @@ class Socket {
 		socket.on('connect', () => {
 			socket.on('reconnect_attempt', (attempt: number) => {
 				console.log('reconnect_attempt', attempt);
-				return
-				if (attempt >= 10) {
+				if (attempt >= 8) {
 					socket?.disconnect();
 					user.logout();
 					Modal.alert('登录过期，请重新登录', '', [
@@ -45,6 +44,11 @@ class Socket {
 				user.groupsSet(groups);
 				setTimeout(scrollToBottom, 1000)
 			});
+
+			socket.on('init', (res: any) => {
+				console.log('【ws <<<<<<<<<<<<<<<< init】', res)
+				this.getAll()
+			})
 
 			this.getAll()
 
