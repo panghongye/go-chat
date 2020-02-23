@@ -14,7 +14,7 @@ class Socket {
 		socket.on('connect', () => {
 			socket.on('reconnect_attempt', (attempt: number) => {
 				console.log('reconnect_attempt', attempt);
-				if (attempt >= 8) {
+				if (attempt >= 99999) {
 					socket?.disconnect();
 					user.logout();
 					Modal.alert('登录过期，请重新登录', '', [

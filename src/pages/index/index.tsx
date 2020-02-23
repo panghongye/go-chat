@@ -23,7 +23,7 @@ class Index extends React.Component {
       <div className="p-index">
         <WhiteSpace size="sm" />
         <WingBlank className={css['header-wrapper']} size="lg">
-          <UserAvatar size="36" name={user?.info?.name +''} style={{ color: '#FFF' }} />
+          <UserAvatar size="36" name={user?.info?.name +'_'} style={{ color: '#FFF' }} />
           <SearchBar
             style={{ width: '70%' }}
             placeholder="用户/群组"

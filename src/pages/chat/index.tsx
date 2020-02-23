@@ -1,6 +1,7 @@
 import { router_observer, socket, scrollToBottom } from '@/utils';
 import { user } from '@/models';
 import { NavBar, Icon, InputItem, Toast } from 'antd-mobile';
+import UserAvatar from 'react-user-avatar';
 import css from './index.scss';
 import { Button } from 'antd';
 import React, { } from 'react';
@@ -27,7 +28,10 @@ class Chat extends React.Component<any> {
         </NavBar>
         <div id='chat-msgs-div' className={css.msgs} >{
           msgs.map((msg: any) => {
-            return <div key={msg.id}>{msg.msg}</div>
+            return <div key={msg.id} style={{display:'flex',marginBottom:10}}>
+              <UserAvatar size="36" name={msg.userName+'_'} style={{ color: '#FFF' ,marginRight:'1em'}} />
+              <div style={{background:"#ccc",borderRadius:6}}>{msg.msg}</div>
+            </div>
           })
         }</div>
         <InputItem
@@ -44,7 +48,7 @@ class Chat extends React.Component<any> {
   send = () => {
     const { msg } = this.state
     if (!msg) return
-    socket.emitAsync('sendGroupMsg', { msg, name: user.info.name, groupID: this.id + '' }).then(
+    socket.emitAsync('sendGroupMsg', { msg, userName: user.info.name, groupID: this.id + '' }).then(
       r => {
         this.setState({ msg: '' })
       }
