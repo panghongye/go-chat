@@ -29,8 +29,8 @@ class Chat extends React.Component<any> {
         <div id='chat-msgs-div' className={css.msgs} >{
           msgs.map((msg: any) => {
             return <div key={msg.id} style={{display:'flex',marginBottom:10}}>
-              <UserAvatar size="36" name={msg.userName+'_'} style={{ color: '#FFF' ,marginRight:'1em'}} />
-              <div style={{background:"#ccc",borderRadius:6}}>{msg.msg}</div>
+              <UserAvatar size="36" name={msg.userName+'_'} style={{ color: '#FFF'}} />
+              <div className={css.d1} >{msg.msg}</div>
             </div>
           })
         }</div>
