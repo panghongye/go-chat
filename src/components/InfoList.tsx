@@ -53,7 +53,7 @@ export default router_observer(function InfoList(props: {
                 onClick={() => onListClick(a)}
                 thumb={<UserAvatar size="36" name={a?.name + '_'} style={{ color: '#FFF' }} />}
               >
-                {a.name}
+                {a?.msgs[a?.msgs?.length-1]?.msg}
               </List.Item>
             );
           })
@@ -71,7 +71,7 @@ export default router_observer(function InfoList(props: {
       >
         <UserAvatar
           size="50"
-          name={info.name+"_"}
+          name={info.name + "_"}
           style={{ color: '#FFF', display: 'flex', justifyContent: 'center' }}
         />
         <p>{info.intro}</p>
@@ -99,8 +99,11 @@ export default router_observer(function InfoList(props: {
             if (clickType === 'getUserInfo') {
               socket
                 .emitAsync('newFriend', { toUserID: info.id })
-                .then(r => {
-                  socket.getAll().then(r => {
+                .then((r: any) => {
+                  info.id = r.data.groupID
+                  infoSet(info)
+                  console.warn(r)
+                  socket.getAll().then(() => {
                     goChat(info)
                   })
                 })

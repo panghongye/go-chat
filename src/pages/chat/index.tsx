@@ -58,7 +58,7 @@ class Chat extends React.Component<any> {
   }
 
   componentDidMount() {
-    setTimeout(scrollToBottom, 0)
+    setTimeout(scrollToBottom, 1)
   }
 }
 
