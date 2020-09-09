@@ -3,6 +3,7 @@ import { Toast, List, Modal, Button } from 'antd-mobile';
 import { onTouchStart, router_observer, socket } from '@/utils';
 import UserAvatar from 'react-user-avatar';
 import { user } from '@/models';
+import { toJS } from 'mobx';
 
 type Info = { name: string; intro: string; id: number | string };
 
@@ -41,17 +42,21 @@ export default router_observer(function InfoList(props: {
   }
 
   return (
-    <>
+    <div>
       <List renderHeader={title}>
         {lists?.length
           ? lists.map((a: any) => {
-            return (
+            let msg=''
+            try {
+              msg=a?.msgs[a?.msgs?.length - 1]?.msg||''
+            } catch (error) {}           
+             return (
               <List.Item
                 key={JSON.stringify(a)}
                 onClick={() => onListClick(a)}
                 thumb={<UserAvatar size="36" name={a?.name + '_'} style={{ color: '#FFF' }} />}
               >
-                {a?.msgs[a?.msgs?.length - 1]?.msg}
+                {msg}
               </List.Item>
             );
           })
@@ -115,6 +120,6 @@ export default router_observer(function InfoList(props: {
           开始聊天
         </Button>
       </Modal>
-    </>
+    </div>
   );
 });
