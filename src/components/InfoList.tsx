@@ -40,12 +40,10 @@ export default router_observer(function InfoList(props: {
     });
   }
 
-
-
   return (
     <>
       <List renderHeader={title}>
-        {lists.length
+        {lists?.length
           ? lists.map((a: any) => {
             return (
               <List.Item
@@ -53,7 +51,7 @@ export default router_observer(function InfoList(props: {
                 onClick={() => onListClick(a)}
                 thumb={<UserAvatar size="36" name={a?.name + '_'} style={{ color: '#FFF' }} />}
               >
-                {a?.msgs[a?.msgs?.length-1]?.msg}
+                {a?.msgs[a?.msgs?.length - 1]?.msg}
               </List.Item>
             );
           })
